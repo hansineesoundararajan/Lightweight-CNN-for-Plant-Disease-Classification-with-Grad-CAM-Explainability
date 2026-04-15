@@ -1,0 +1,41 @@
+{
+    "model": {
+        "type": "DynLeafNet",
+        "num_classes": 38,
+        "channels": 256,
+        "num_blocks": 4,
+        "dropout_p": 0.1,
+        "early_threshold": 0.9
+    },
+    "training": {
+        "img_size": 32,
+        "batch_size": 128,
+        "epochs_trained": 100,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0005,
+        "optimizer": "AdamW",
+        "scheduler": "CosineAnnealingLR",
+        "loss_function": "FocalLoss",
+        "data_augmentation": [
+            "RandomHorizontalFlip",
+            "RandomRotation(15)",
+            "RandomResizedCrop(scale=0.85-1.0)",
+            "ColorJitter",
+            "ImageNet Normalization"
+        ]
+    },
+    "performance": {
+        "best_val_accuracy": 0.9895037289384034,
+        "final_train_accuracy": 0.9895727833532824,
+        "final_val_accuracy": 0.9895037289384034,
+        "final_train_loss": 0.03582886813487832,
+        "final_val_loss": 0.014253304472427904,
+        "approx_flops_millions": 69.7
+    },
+    "dataset": {
+        "name": "PlantVillage",
+        "train_size": 43444,
+        "val_size": 10861,
+        "val_split": 0.2
+    }
+}

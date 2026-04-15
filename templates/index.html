@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DynLeafNet – Plant Disease Classification</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1d1f23;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e5e7eb;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(145deg, #e9eff7, #f8fbfe);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+    }
+    .wrapper {
+      width: 100%;
+      min-height: 85vh;
+      background: var(--card);
+      padding: 26px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 32px rgba(38, 56, 106, 0.14);
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr 1.05fr;
+      align-items: start;
+    }
+    .header {
+      margin: 0 0 0.9rem 0;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #102a43;
+    }
+    .block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+    .dataset-options {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .dataset-options label {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 14px;
+      background: #ffffff;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dataset-options input[type="radio"] {
+      accent-color: var(--primary);
+    }
+    .dataset-options input[type="radio"]:checked + span {
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16);
+    }
+    #fileInput {
+      padding: 8px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      width: 100%;
+      background: #ffffff;
+      cursor: pointer;
+    }
+    .btn-predict {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 18px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: background 0.2s ease, transform 0.15s ease;
+      width: fit-content;
+    }
+    .btn-predict:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .result-text {
+      margin: .5rem 0 0;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .images {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      align-items: start;
+    }
+    .image-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #f9fbfe;
+      padding: 8px;
+      text-align: center;
+      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12);
+    }
+    .image-card span {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      color: #475569;
+      font-weight: 600;
+    }
+    .images img {
+      width: 100%;
+      height: 280px;
+      object-fit: contain;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .prediction-card {
+      margin-top: 12px;
+      border: 1px solid #dbe2ef;
+      border-radius: 10px;
+      background: #f0f5ff;
+      padding: 12px 14px;
+      color: #0f172a;
+      grid-column: 1 / -1;
+    }
+    .prediction-card .result-text {
+      margin: 0;
+      color: #0f172a;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .confidence-text {
+      margin: 2px 0 0;
+      color: #334155;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .note {
+      margin-top: 14px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    @media (max-width: 1000px) {
+      .wrapper { grid-template-columns: 1fr; }
+      .images { grid-template-columns: 1fr; }
+      .header { text-align: center; }
+      .btn-predict { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h2 class="header">DynLeafNet Plant Disease Dashboard</h2>
+    <div class="block">
+      <div class="dataset-options">
+        <label><input type="radio" name="dataset" value="plantvillage" checked><span>PlantVillage</span></label>
+        <label><input type="radio" name="dataset" value="rice"><span>Rice Leaf Disease</span></label>
+      </div>
+      <input type="file" id="fileInput" accept="image/*">
+      <button class="btn-predict" onclick="send()">Predict</button>
+      <small class="note">Tip: Upload a leaf image and use PlantVillage or Rice dataset for the best result.</small>
+    </div>
+    <div class="prediction-card">
+      <p id="result" class="result-text">No prediction yet</p>
+      <p id="confidence" class="confidence-text"></p>
+    </div>
+    <div class="images">
+      <div class="image-card">
+        <span>Original image</span>
+        <img id="orig" alt="Original image">
+      </div>
+      <div class="image-card">
+        <span>Grad-CAM overlay</span>
+        <img id="ov" alt="Grad-CAM overlay">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function send() {
+      const fileInput = document.getElementById('fileInput');
+      const f = fileInput.files[0];
+      if (!f) {
+        alert("Please select an image");
+        return;
+      }
+
+      // Get selected dataset
+      const dataset = document.querySelector(
+        'input[name="dataset"]:checked'
+      ).value;
+
+      const fd = new FormData();
+      fd.append('file', f);
+      fd.append('dataset', dataset);
+
+      const res = await fetch('/predict', {
+        method: 'POST',
+        body: fd
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById('result').textContent = data.error;
+        return;
+      }
+
+      const datasetName = data.dataset ? data.dataset.toUpperCase() : 'UNKNOWN';
+      const diseaseName = data.disease || 'Unknown';
+      let confidence = data.confidence || '';
+      if (confidence && !confidence.toString().includes('%')) {
+        const c = Number(confidence);
+        confidence = Number.isFinite(c) ? `${c.toFixed(2)}%` : confidence;
+      }
+
+      document.getElementById('result').textContent =
+        `${datasetName} → ${diseaseName} (${confidence})`;
+      document.getElementById('confidence').textContent =
+        confidence ? `Confidence interval: ${confidence}` : '';
+
+      document.getElementById('orig').src = data.original;
+      document.getElementById('ov').src = data.overlay;
+    }
+  </script>
+
+</body>
+</html>

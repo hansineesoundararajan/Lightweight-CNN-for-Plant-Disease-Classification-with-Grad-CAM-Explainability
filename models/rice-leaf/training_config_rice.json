@@ -1,0 +1,11 @@
+{
+    "model_type": "DynLeafNet",
+    "num_classes": 6,
+    "img_size": 224,
+    "channels": 256,
+    "num_blocks": 4,
+    "dropout_p": 0.1,
+    "best_val_accuracy": 0.9412698412698413,
+    "dataset": "Rice Leaf Disease",
+    "paper_target_accuracy": 0.9564
+}
