@@ -2,8 +2,20 @@
 
 A Flask-based web application for plant disease classification using lightweight deep learning models with integrated Grad-CAM++ visualizations for interpretable predictions.
 
+> 🏷️ This project implements the **DynLeafNet** architecture proposed in the paper:
+> *"DynLeafNet: A dynamic lightweight architecture for plant disease classification using dynamic residual network with explainable artificial intelligence"* (ScienceDirect, 2025).
+> The live demo and deployment were developed independently as part of this project.
 ---
 
+## 🌐 Live Demo
+
+Try the app live on Hugging Face Spaces:
+
+[![Hugging Face Spaces](https://img.shields.io/badge/🤗%20Hugging%20Face-Live%20Demo-blue)](https://huggingface.co/spaces/HansineeS/plant-disease-detection)
+
+> Upload a plant leaf image and get instant disease prediction with Grad-CAM++ explainability — no setup required.
+
+---
 ## 🚀 Features
 
 - 🌱 Multi-dataset support:
