@@ -1,6 +1,6 @@
-# 🌿 Plant Disease Detection Web App (DynLeafNet + Grad-CAM++)
+# 🌿 Plant Disease Detection Web App (Dynamic CNN + Grad-CAM++)
 
-A Flask-based web application for plant disease classification using lightweight deep learning models (DynLeafNet) with integrated Grad-CAM++ visualizations for interpretable predictions.
+A Flask-based web application for plant disease classification using lightweight deep learning models with integrated Grad-CAM++ visualizations for interpretable predictions.
 
 ---
 
